@@ -1,0 +1,29 @@
+.footlist {
+    text-align: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.footlist>li {
+    display: inline;
+    text-align: center;
+    text-decoration: none;
+    padding: 0 5px;
+    border-right: 1px solid #bbb;
+}
+.footlist:last-child {
+    border-right: none;
+}
+.foot {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #bbb
+}
+.header .menu {
+    display: flex;
+}

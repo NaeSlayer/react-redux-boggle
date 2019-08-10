@@ -2,8 +2,9 @@
 import React, { Fragment } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Provider } from 'react-redux';
-import { composedWithDevTools } from 'redux-devtools-extension';
-import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
 
 //IMPORT PROJECT REFERENCES
 import AppWrapper from './components/Wrapper/AppWrapper';
@@ -12,7 +13,7 @@ import rootReducer from './state/reducers';
 
 const store = createStore(
   rootReducer,
-  composedWithDevTools()
+  compose(composeWithDevTools(), applyMiddleware(thunk))
 );
 
 function App() {

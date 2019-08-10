@@ -1,18 +1,35 @@
 import React, { Component } from 'react';
+import unirest from 'unirest';
 import { connect } from 'react-redux';
 import Button from './Button';
+import Timer from './Timer';
 import CorrectWords from './CorrectWords';
 import './controlPanel.css';
-// import { setCurrentGuess, setCorrectWords, setBoardArr } from 
+import { setCurrentGuess, setCorrectWords, setBoardArr } from '../../state/actions/wordsActions';
+import { startTimer, stopTimer, resetTimer, decrementTimer } from '../../state/actions/timerActions';
 
 const diceArr = ['AAEEGN', 'ELRTTY', 'AOOTTW', 'ABBJOO', 'EHRTVW', 'CIMOTU', 'DISTTY', 'EIOSST', 'DELRVY', 'ACHOPS', 'HIMNQU', 'EEINSU', 'EEGHNW', 'AFFKPS', 'HLNNRZ', 'DEILRX'];
+
+let interval;
+let key = 'SFDnA3CZHPmshcPp3Xahaj3lddh1p1WRUVVjsnyqNmEb5zEDyp'
+// let allPossibleWords = [];
+
 
 class ControlPanelCard extends Component {
     componentDidMount() {
         this.generateBoard();
     }
+
+    componentDidUpdate() {
+        const { timeLeft } = this.props;
+        if (timeLeft < 1) {
+            clearInterval(this.interval);
+            this.gameOver();
+        }
+    }
     generateBoard() {
         const { setBoardArr } = this.props;
+        this.startTimer();
 
         // reset LetterBoard variables
         let newLetterArr = [];
@@ -35,6 +52,8 @@ class ControlPanelCard extends Component {
             [shuffledArr[i], shuffledArr[rand]] = [shuffledArr[rand], shuffledArr[i]];
         }
         console.log(shuffledArr);
+        let newBoardString = shuffledArr.join('');
+        console.log(newBoardString);
 
         //replaces Q with QU
         for (let i = 0; i < shuffledArr.length; i++) {
@@ -43,19 +62,54 @@ class ControlPanelCard extends Component {
                 shuffledArr.splice(indexQ, 1, 'QU');
             }
         }
+        this.apiCall(newBoardString, shuffledArr);
+    }
 
-        //convert shuffledArr to string to send to API
-        newBoardString = shuffledArr.join('');
-        console.log(newBoarsString);
-        //this will be replaced with response from API call
-        let allPossibleWords = ['DOG', 'CAT', 'RAT'];
+    apiCall = (letters, shuffledArr) => {
+        const { setBoardArr } = this.props;
+        unirest
+            .get(`https://codebox-boggle-v1.p.rapidapi.com/${letters}`)
+            .headers({ "x-rapidapi-host": "codebox-boggle-v1.p.rapidapi.com", "x-rapidapi-key": "SFDnA3CZHPmshcPp3Xahaj3lddh1p1WRUVVjsnyqNmEb5zEDyp", 'Accept': 'application/json', 'Content-Type': 'application/json' })
+            .then((response) => {
+                console.log(response.body);
+                setBoardArr(shuffledArr, response.body);
+            })
 
-        return setBoardArr(shuffledArr, allPossibleWords);
+        // this works too
+
+        // var req = unirest("GET", `https://codebox-boggle-v1.p.rapidapi.com/${letters}`);
+        // req.headers({
+        //     "x-rapidapi-host": "codebox-boggle-v1.p.rapidapi.com",
+        //     "x-rapidapi-key": "SFDnA3CZHPmshcPp3Xahaj3lddh1p1WRUVVjsnyqNmEb5zEDyp"
+        // });
+        // req.then((response) => {
+        //     console.log(response.body);
+        //     this.setState({
+        //         response: response.body
+        //     });
+        //     setBoardArr(shuffledArr, response.body)
+        // })
+        // return true
+    }
+
+
+    startTimer() {
+        const { timeLeft, decrementTimer } = this.props;
+        this.interval = setInterval(() => {
+            decrementTimer();
+        }, 1000);
     }
 
     resetGame = () => {
+        const { setCorrectWords, resetTimer } = this.props;
         let correctWords = [];
-        this.props.setCorrectWords(correctWords);
+        clearInterval(this.interval);
+        setCorrectWords(correctWords);
+        resetTimer();
+    }
+
+    gameOver() {
+        console.log("game over");
     }
 
     restartClick = () => {
@@ -67,19 +121,23 @@ class ControlPanelCard extends Component {
         this.resetGame();
     }
 
-    // submitWordClick = () => {
-    //     const { correctWords, currentGuess, setCorrectWords } = this.props;
-    //     const { isValidWord, clearWordClick } = this;
-    //     if (isValidWord()) {
-    //         let correctWordsArr = correctWords.concat(currentGuess);
-    //         setCorrectWords(correctWordsArr);
-    //     }
-    // }
+    submitWordClick = () => {
+        const { correctWords, currentGuess, setCorrectWords } = this.props;
+        const { isValidWord, clearWordClick } = this;
+        if (isValidWord()) {
+            let correctWordsArr = correctWords.concat(currentGuess);
+            setCorrectWords(correctWordsArr);
+        }
+    }
 
-    // isValidWord = () => {
-    //     const { allPossibleWords, currentGuess } = this.props;
+    isValidWord = () => {
+        const { allPossibleWords, currentGuess } = this.props;
+        if (currentGuess.length > 2 && allPossibleWords.includes(currentGuess)) {
+            return true;
+        }
 
-    // }
+
+    }
 
     render() {
         return (
@@ -95,6 +153,7 @@ class ControlPanelCard extends Component {
                         value='New Game'
                         type='ctrBtn'
                     />
+                    <Timer timeLeft='3:00' />
                 </div>
                 <div className='submitWord'>
                     <input value={this.props.currentGuess} />
@@ -122,7 +181,8 @@ const mapStateToProps = state => {
         allPossibleWords: state.words.allPossibleWords,
         correctWords: state.words.correctWords,
         currentGuess: state.words.currentGuess,
-        selectedLettersIndexArr: state.words.selectedLettersIndexArr
+        selectedLettersIndexArr: state.words.selectedLettersIndexArr,
+        timeLeft: state.timer.timeLeft
     }
 }
 
@@ -130,6 +190,8 @@ const mapDispatchToProps = dispatch => ({
     setCurrentGuess: (currentGuess, selectedLettersIndexArr) => dispatch(setCurrentGuess(currentGuess, selectedLettersIndexArr)),
     setCorrectWords: value => dispatch(setCorrectWords(value)),
     setBoardArr: (shuffledArr, allPossibleWords) => dispatch(setBoardArr(shuffledArr, allPossibleWords)),
+    decrementTimer: () => dispatch(decrementTimer()),
+    resetTimer: () => dispatch(resetTimer()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanelCard);

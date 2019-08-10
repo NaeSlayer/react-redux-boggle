@@ -29,3 +29,12 @@
 input {
     background-color: #FFAEAA;
 }
+.timer {
+    height: 40px;
+    width: 100px;
+    background-color: #D4706A;
+    border-radius: 5px;
+    color: #550400;
+    border: 1px solid #550400;
+    font-size: 15px;
+}

@@ -1,0 +1,23 @@
+.ltrBtn {
+    height: 50px;
+    width:  50px;
+    background-color: #D4706A;
+    border-radius: 5px;
+    color: #550400;
+    border: 1px solod #550400;
+    font-size: 20px;
+}
+.ltrBtn:hover {
+    background-color: lavender;
+}
+.letterBoard {
+    width: 218px;
+    margin: auto;
+    background-color: #FFAEAA;
+}
+table {
+    margin: auto;
+}
+.activeLetter {
+    background-color: lavender;
+}
