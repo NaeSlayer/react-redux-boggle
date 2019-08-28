@@ -135,8 +135,16 @@ class ControlPanelCard extends Component {
         if (currentGuess.length > 2 && allPossibleWords.includes(currentGuess)) {
             return true;
         }
+    }
 
-
+    convertTime = () => {
+        const { timeLeft } = this.props;
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft - minutes * 60;
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+        return minutes + ":" + seconds;
     }
 
     render() {
@@ -153,7 +161,7 @@ class ControlPanelCard extends Component {
                         value='New Game'
                         type='ctrBtn'
                     />
-                    <Timer timeLeft='3:00' />
+                    <Timer timeLeft={this.convertTime()} />
                 </div>
                 <div className='submitWord'>
                     <input value={this.props.currentGuess} />
@@ -165,7 +173,7 @@ class ControlPanelCard extends Component {
                     <Button
                         onClick={this.submitWordClick}
                         value='Submit'
-                        type='ctrBtns'
+                        type='ctrBtn'
                     />
                 </div>
                 <div>

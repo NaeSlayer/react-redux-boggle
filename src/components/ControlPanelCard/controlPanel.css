@@ -16,6 +16,8 @@
     background-color: #FFAEAA;
 }
 .wordBox {
+    overflow-y: scroll;
+    height: 150px;
     min-height: 150px;
     border: 1px solid black;
     width: 100%;
