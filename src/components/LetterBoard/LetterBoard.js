@@ -82,7 +82,7 @@ class LetterBoard extends Component {
                                         index={index}
                                         value={letter}
                                         onClick={() => this.handleLetterClick(letter, index)}
-                                        active="inactive"
+                                        active={this.props.selectedLettersIndexArr.includes(index) ? "activeLetter" : "inactive"}
                                     />
 
                                 </td>)

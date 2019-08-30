@@ -30,6 +30,7 @@
 }
 input {
     background-color: #FFAEAA;
+    height: 40px;
 }
 .timer {
     height: 40px;
@@ -38,5 +39,7 @@ input {
     border-radius: 5px;
     color: #550400;
     border: 1px solid #550400;
-    font-size: 15px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 35px;
 }

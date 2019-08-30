@@ -110,6 +110,45 @@ class ControlPanelCard extends Component {
 
     gameOver() {
         console.log("game over");
+        // this.calculateScore();
+        alert("Thanks for playing! Your score is: " + this.calculateScore());
+    }
+
+    calculateScore = () => {
+        console.log("calculateScore");
+        const { correctWords } = this.props;
+        console.log(correctWords);
+        let totalScore = 0;
+        let score = 0;
+        for (let i = 0; i < correctWords.length; i++) {
+            console.log("inside for loop");
+            let length = correctWords[i].length;
+            switch (length) {
+                case 3:
+                    score = 1;
+                    break;
+                case 4:
+                    score = 1;
+                    break;
+                case 5:
+                    score = 2;
+                    break;
+                case 6:
+                    score = 3;
+                    break;
+                case 7:
+                    score = 5;
+                    break;
+                case 8:
+                    score = 11;
+                    break
+                default:
+                    score = 11;
+                    break;
+            };
+            totalScore = totalScore + score;
+        }
+        return totalScore;
     }
 
     restartClick = () => {
@@ -118,7 +157,9 @@ class ControlPanelCard extends Component {
     }
 
     newGameClick = () => {
-        this.resetGame();
+        // this.resetGame();
+        // this.calculateScore();
+        console.log(this.calculateScore());
     }
 
     submitWordClick = () => {
@@ -165,16 +206,16 @@ class ControlPanelCard extends Component {
                 </div>
                 <div className='submitWord'>
                     <input value={this.props.currentGuess} />
-                    <Button
+                    {/* <Button
                         onClick={this.clearWordClick}
                         value='Clear'
                         type='ctrBtn'
-                    />
-                    <Button
+                    /> */}
+                    {/* <Button
                         onClick={this.submitWordClick}
                         value='Submit'
                         type='ctrBtn'
-                    />
+                    /> */}
                 </div>
                 <div>
                     <CorrectWords correctWords={this.props.correctWords} />
