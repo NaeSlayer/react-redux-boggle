@@ -81,6 +81,7 @@ class LetterBoard extends Component {
                                     <LetterCard
                                         index={index}
                                         value={letter}
+                                        disabled={this.props.isGameOver}
                                         onClick={() => this.handleLetterClick(letter, index)}
                                         active={this.props.selectedLettersIndexArr.includes(index) ? "activeLetter" : "inactive"}
                                     />
@@ -104,6 +105,7 @@ const mapStateToProps = state => {
         currentGuess: state.words.currentGuess,
         selectedLettersIndexArr: state.words.selectedLettersIndexArr,
         boardArr: state.words.boardArr,
+        isGameOver: state.timer.isGameOver,
     }
 }
 

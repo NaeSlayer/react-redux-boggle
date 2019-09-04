@@ -18,12 +18,16 @@
 .foot {
     position: absolute;
     left: 0;
-    bottom: 0;
+    /* bottom: 0; */
     font-size: 12px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     width: 100%;
     background-color: #bbb
 }
 .header .menu {
     display: flex;
+}
+.container {
+    background-color: aqua;
+    height: 100vh;
 }

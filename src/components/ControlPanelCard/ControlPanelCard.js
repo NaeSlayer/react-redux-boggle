@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import unirest from 'unirest';
 import { connect } from 'react-redux';
 import Button from './Button';
-import Timer from './Timer';
+import Total from './Total';
 import CorrectWords from './CorrectWords';
 import './controlPanel.css';
 import { setCurrentGuess, setCorrectWords, setBoardArr } from '../../state/actions/wordsActions';
-import { startTimer, stopTimer, resetTimer, decrementTimer } from '../../state/actions/timerActions';
+import { stopTimer, resetTimer, decrementTimer } from '../../state/actions/timerActions';
 
 const diceArr = ['AAEEGN', 'ELRTTY', 'AOOTTW', 'ABBJOO', 'EHRTVW', 'CIMOTU', 'DISTTY', 'EIOSST', 'DELRVY', 'ACHOPS', 'HIMNQU', 'EEINSU', 'EEGHNW', 'AFFKPS', 'HLNNRZ', 'DEILRX'];
-
-let interval;
-let key = 'SFDnA3CZHPmshcPp3Xahaj3lddh1p1WRUVVjsnyqNmEb5zEDyp'
-// let allPossibleWords = [];
-
 
 class ControlPanelCard extends Component {
     componentDidMount() {
@@ -71,7 +66,9 @@ class ControlPanelCard extends Component {
             .get(`https://codebox-boggle-v1.p.rapidapi.com/${letters}`)
             .headers({ "x-rapidapi-host": "codebox-boggle-v1.p.rapidapi.com", "x-rapidapi-key": "SFDnA3CZHPmshcPp3Xahaj3lddh1p1WRUVVjsnyqNmEb5zEDyp", 'Accept': 'application/json', 'Content-Type': 'application/json' })
             .then((response) => {
-                console.log(response.body);
+                response.body.sort(function (a, b) {
+                    return b.length - a.length || a.localeCompare(b)
+                })
                 setBoardArr(shuffledArr, response.body);
             })
 
@@ -94,7 +91,7 @@ class ControlPanelCard extends Component {
 
 
     startTimer() {
-        const { timeLeft, decrementTimer } = this.props;
+        const { decrementTimer } = this.props;
         this.interval = setInterval(() => {
             decrementTimer();
         }, 1000);
@@ -109,46 +106,8 @@ class ControlPanelCard extends Component {
     }
 
     gameOver() {
-        console.log("game over");
-        // this.calculateScore();
-        alert("Thanks for playing! Your score is: " + this.calculateScore());
-    }
-
-    calculateScore = () => {
-        console.log("calculateScore");
-        const { correctWords } = this.props;
-        console.log(correctWords);
-        let totalScore = 0;
-        let score = 0;
-        for (let i = 0; i < correctWords.length; i++) {
-            console.log("inside for loop");
-            let length = correctWords[i].length;
-            switch (length) {
-                case 3:
-                    score = 1;
-                    break;
-                case 4:
-                    score = 1;
-                    break;
-                case 5:
-                    score = 2;
-                    break;
-                case 6:
-                    score = 3;
-                    break;
-                case 7:
-                    score = 5;
-                    break;
-                case 8:
-                    score = 11;
-                    break
-                default:
-                    score = 11;
-                    break;
-            };
-            totalScore = totalScore + score;
-        }
-        return totalScore;
+        const { stopTimer } = this.props;
+        stopTimer();
     }
 
     restartClick = () => {
@@ -157,14 +116,13 @@ class ControlPanelCard extends Component {
     }
 
     newGameClick = () => {
-        // this.resetGame();
-        // this.calculateScore();
-        console.log(this.calculateScore());
+        this.resetGame();
+        this.startTimer();
     }
 
     submitWordClick = () => {
         const { correctWords, currentGuess, setCorrectWords } = this.props;
-        const { isValidWord, clearWordClick } = this;
+        const { isValidWord } = this;
         if (isValidWord()) {
             let correctWordsArr = correctWords.concat(currentGuess);
             setCorrectWords(correctWordsArr);
@@ -188,9 +146,23 @@ class ControlPanelCard extends Component {
         return minutes + ":" + seconds;
     }
 
+    totalDisplay = () => {
+        const { correctWords, allPossibleWords, isGameOver } = this.props;
+        if (isGameOver) {
+            return `${correctWords.length} / ${allPossibleWords.length} Words`
+        }
+        else {
+            return `${correctWords.length} Words`
+        }
+    }
+
     render() {
         return (
             <div className='controlPanel' xs={7}>
+                <Total display={this.totalDisplay()} />
+                <div>
+                    <CorrectWords />
+                </div>
                 <div className='newGameBtns'>
                     <Button
                         onClick={this.restartClick}
@@ -202,24 +174,9 @@ class ControlPanelCard extends Component {
                         value='New Game'
                         type='ctrBtn'
                     />
-                    <Timer timeLeft={this.convertTime()} />
                 </div>
-                <div className='submitWord'>
-                    <input value={this.props.currentGuess} />
-                    {/* <Button
-                        onClick={this.clearWordClick}
-                        value='Clear'
-                        type='ctrBtn'
-                    /> */}
-                    {/* <Button
-                        onClick={this.submitWordClick}
-                        value='Submit'
-                        type='ctrBtn'
-                    /> */}
-                </div>
-                <div>
-                    <CorrectWords correctWords={this.props.correctWords} />
-                </div>
+
+
             </div>
         )
     }
@@ -231,7 +188,8 @@ const mapStateToProps = state => {
         correctWords: state.words.correctWords,
         currentGuess: state.words.currentGuess,
         selectedLettersIndexArr: state.words.selectedLettersIndexArr,
-        timeLeft: state.timer.timeLeft
+        timeLeft: state.timer.timeLeft,
+        isGameOver: state.timer.isGameOver,
     }
 }
 
@@ -241,6 +199,7 @@ const mapDispatchToProps = dispatch => ({
     setBoardArr: (shuffledArr, allPossibleWords) => dispatch(setBoardArr(shuffledArr, allPossibleWords)),
     decrementTimer: () => dispatch(decrementTimer()),
     resetTimer: () => dispatch(resetTimer()),
+    stopTimer: () => dispatch(stopTimer()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanelCard);

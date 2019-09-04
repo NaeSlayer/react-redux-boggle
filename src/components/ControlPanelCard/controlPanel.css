@@ -1,6 +1,6 @@
 .controlPanel {
     border: 1px solid black;
-    width: 60%;
+    width: 50%;
     padding: 5px;
 }
 .ctrBtn {
@@ -11,27 +11,32 @@
     color: #550400;
     border: 1px solid #550400;
     font-size: 15px;
+    margin: 5px auto;
 }
 .ctrBtn:hover {
     background-color: #FFAEAA;
 }
 .wordBox {
     overflow-y: scroll;
-    height: 150px;
-    min-height: 150px;
+    height: 240px;
+    /* min-height: 300px; */
     border: 1px solid black;
+    border-radius: 5px;
     width: 100%;
 }
 .newGameBtns {
     display: flex;
+    justify-content: space-evenly;
 }
 .submitWord {
     display: flex;
 }
-input {
-    background-color: #FFAEAA;
+/* input {
+    background-color: #D4706A;
     height: 40px;
-}
+    border: 1px solid black;
+    border-radius: 5px;
+} */
 .timer {
     height: 40px;
     width: 100px;
@@ -42,4 +47,16 @@ input {
     font-size: 20px;
     text-align: center;
     line-height: 35px;
+}
+.total {
+    height: 30px;
+    width: 150px;
+    background-color: #D4706A;
+    border-radius: 5px;
+    color: #550400;
+    border: 1px solid #550400;
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    margin: 5px auto;
 }

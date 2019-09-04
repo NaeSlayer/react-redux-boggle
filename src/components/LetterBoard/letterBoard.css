@@ -14,10 +14,31 @@
     width: 218px;
     margin: auto;
     background-color: #FFAEAA;
+    border: 1px solid black;
+    border-radius: 5px;
 }
 table {
     margin: auto;
 }
 .activeLetter {
     background-color: lavender;
+}
+.timer, .letterBoard  {
+    margin: 5px auto;
+}
+.letterBoardPanel {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+input {
+    background-color: #D4706A;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+.currentGuess {
+    margin: auto;
 }

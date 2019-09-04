@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import LetterBoard from '../components/LetterBoard/LetterBoard';
+import LetterBoardPanel from '../components/LetterBoard/LetterBoardPanel';
 import ControlPanelCard from '../components/ControlPanelCard/ControlPanelCard';
 import '../App.css';
 
@@ -8,8 +8,8 @@ class GamePage extends Component {
     render() {
         return (
             <div className='gameArea'>
-                <LetterBoard />
                 <ControlPanelCard />
+                <LetterBoardPanel />
             </div>
         );
     }

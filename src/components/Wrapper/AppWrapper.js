@@ -6,9 +6,11 @@ import Footer from './Footer';
 
 const AppWrapper = props => {
     return (
-        <div className='container'>
+        <div>
             <Header />
-            {props.children}
+            <div className='container'>
+                {props.children}
+            </div>
             <Footer />
         </div>
     )
