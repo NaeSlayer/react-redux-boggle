@@ -18,7 +18,7 @@ class CorrectWords extends Component {
     isHighlighted = (word) => {
         const { correctWords, isGameOver } = this.props;
         if (isGameOver && correctWords.includes(word)) {
-            return { backgroundColor: '#FFAEAA' }
+            return { backgroundColor: '#FFAEAA', width: '120px' }
         }
 
     }
