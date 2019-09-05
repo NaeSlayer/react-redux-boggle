@@ -14,7 +14,7 @@
     width: 218px;
     margin: auto;
     background-color: #FFAEAA;
-    border: 1px solid black;
+    border: 1px solid #550400;
     border-radius: 5px;
 }
 table {
@@ -27,18 +27,31 @@ table {
     margin: 5px auto;
 }
 .letterBoardPanel {
-    margin: auto;
+    border: 1px solid #550400;
+    border-left: none;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
 input {
     background-color: #D4706A;
-    height: 40px;
-    border: 1px solid black;
+    /* height: 40px; */
+    border: 1px solid #550400;
     border-radius: 5px;
     padding: 5px;
 }
 .currentGuess {
-    margin: auto;
+    /* margin: auto; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.clearBtn {
+    background-color: #D4706A;
+    width: 40px;
+    border: 1px solid #550400;
+    border-radius: 5px;
+    padding: 5px;
+    height: 40px;
 }

@@ -4,6 +4,7 @@ import { calculateTotalScore } from '../GamePage/util';
 import Timer from './Timer';
 import LetterBoard from './LetterBoard';
 import CurrentGuess from './CurrentGuess';
+import { setCurrentGuess } from '../../state/actions/wordsActions';
 import './letterBoard.css';
 
 class LetterBoardPanel extends Component {
@@ -17,13 +18,19 @@ class LetterBoardPanel extends Component {
         }
         return minutes + ":" + seconds;
     }
+    clearWordClick = () => {
+        const { setCurrentGuess } = this.props;
+        let currentGuess = '';
+        let selectedLettersIndexArr = [];
+        setCurrentGuess(currentGuess, selectedLettersIndexArr);
+    }
 
     render() {
         return (
             <div className='letterBoardPanel' xs={7}>
                 <Timer timeLeft={this.props.isGameOver ? calculateTotalScore(this.props.correctWords) : this.convertTime()} />
                 <LetterBoard />
-                <CurrentGuess currentGuess={this.props.currentGuess} />
+                <CurrentGuess currentGuess={this.props.currentGuess} clearWordClick={this.clearWordClick} />
             </div>
         )
     }
@@ -37,6 +44,8 @@ const mapStateToProps = state => {
         isGameOver: state.timer.isGameOver,
     }
 }
+const mapDispatchToProps = dispatch => ({
+    setCurrentGuess: (currentGuess, selectedLettersIndexArr) => dispatch(setCurrentGuess(currentGuess, selectedLettersIndexArr)),
+})
 
-
-export default connect(mapStateToProps)(LetterBoardPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(LetterBoardPanel);

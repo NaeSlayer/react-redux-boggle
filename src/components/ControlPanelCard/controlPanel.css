@@ -1,5 +1,6 @@
 .controlPanel {
-    border: 1px solid black;
+    border: 1px solid #550400;
+    border-right: none;
     width: 50%;
     padding: 5px;
 }
@@ -20,7 +21,7 @@
     overflow-y: scroll;
     height: 240px;
     /* min-height: 300px; */
-    border: 1px solid black;
+    border: 1px solid #550400;
     border-radius: 5px;
     width: 100%;
 }
