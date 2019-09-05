@@ -110,14 +110,14 @@ class ControlPanelCard extends Component {
         stopTimer();
     }
 
-    restartClick = () => {
+    replayClick = () => {
         this.resetGame();
-        this.generateBoard();
+        this.startTimer();
     }
 
     newGameClick = () => {
         this.resetGame();
-        this.startTimer();
+        this.generateBoard();
     }
 
     submitWordClick = () => {
@@ -165,8 +165,8 @@ class ControlPanelCard extends Component {
                 </div>
                 <div className='newGameBtns'>
                     <Button
-                        onClick={this.restartClick}
-                        value='Restart'
+                        onClick={this.replayClick}
+                        value='Replay'
                         type='ctrBtn'
                     />
                     <Button
