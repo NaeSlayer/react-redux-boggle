@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
@@ -11,9 +11,14 @@ import AppWrapper from './components/Wrapper/AppWrapper';
 import { AppRouter } from './routers/AppRouter';
 import rootReducer from './state/reducers';
 
+// const store = createStore(
+//   rootReducer,
+//   compose(composeWithDevTools(), applyMiddleware(thunk))
+// );
+
 const store = createStore(
   rootReducer,
-  compose(composeWithDevTools(), applyMiddleware(thunk))
+  compose(window.devToolsExtension ? window.devToolsExtension() : f => f, applyMiddleware(thunk))
 );
 
 function App() {
