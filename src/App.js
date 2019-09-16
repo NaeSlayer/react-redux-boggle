@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+// import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
